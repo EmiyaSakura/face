@@ -9,8 +9,9 @@ import '../util/http.dart';
 class CroppingPage extends StatefulWidget {
   final image;
   final name;
+  final square;
 
-  const CroppingPage({Key? key, this.image, this.name}) : super(key: key);
+  const CroppingPage({Key? key, this.image, this.name, this.square = true}) : super(key: key);
 
   @override
   _CroppingPageState createState() => _CroppingPageState();
@@ -89,7 +90,8 @@ class _CroppingPageState extends State<CroppingPage> {
               : Crop.file(
                   widget.image,
                   key: cropKey,
-                  aspectRatio: 1,
+                  scale: 1,
+                  aspectRatio: widget.square ? 1 : null,
                 ),
         ));
   }

@@ -109,23 +109,34 @@ class _ChatPageState extends State<ChatPage> {
                                         SizedBox(
                                           height: 4,
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.only(left: 24),
-                                          padding: EdgeInsets.fromLTRB(
-                                              10, 6, 10, 10),
-                                          decoration: BoxDecoration(
-                                              color: Colors.blue,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10))),
-                                          child: Text(
-                                            e['content'],
-                                            softWrap: true,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 16,
-                                                height: 1.5),
-                                          ),
-                                        ),
+                                        e['type'].toString() == 'image'
+                                            ? ConstrainedBox(
+                                                constraints: BoxConstraints(
+                                                  maxWidth: 150,
+                                                  maxHeight: 400
+                                                ),
+                                                child: Image.network(
+                                                    e['content'].toString()))
+                                            : Container(
+                                                margin:
+                                                    EdgeInsets.only(left: 24),
+                                                padding: EdgeInsets.fromLTRB(
+                                                    10, 6, 10, 10),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.blue,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10))),
+                                                child: Text(
+                                                  e['content'],
+                                                  softWrap: true,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16,
+                                                      height: 1.5),
+                                                ),
+                                              ),
                                         SizedBox(
                                           height: 4,
                                         ),
@@ -196,7 +207,15 @@ class _ChatPageState extends State<ChatPage> {
                                         SizedBox(
                                           height: 4,
                                         ),
-                                        Container(
+                                        e['type'].toString() == 'image'
+                                            ? ConstrainedBox(
+                                            constraints: BoxConstraints(
+                                                maxWidth: 150,
+                                                maxHeight: 400
+                                            ),
+                                            child: Image.network(
+                                                e['content'].toString()))
+                                            : Container(
                                           margin: EdgeInsets.only(right: 24),
                                           padding: EdgeInsets.fromLTRB(
                                               10, 6, 10, 10),
@@ -246,6 +265,7 @@ class _ChatPageState extends State<ChatPage> {
                                     builder: (context) => CroppingPage(
                                           image: image,
                                           name: name,
+                                          square: false,
                                         ))).then((value) async {
                               if (value != null) {
                                 var res = await Http().post(

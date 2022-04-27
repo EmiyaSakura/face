@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:face/util/router.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 
 import '../component/iconTextFormField.dart';
 import '../util/http.dart';
+import 'cropping_page.dart';
 import 'doctor_home_page.dart';
 
 class ChatPage extends StatefulWidget {
@@ -22,7 +26,7 @@ class _ChatPageState extends State<ChatPage> {
   var chats = [];
   late Timer timer;
 
-  TextEditingController infoController = TextEditingController();
+  TextEditingController contentController = TextEditingController();
 
   init() async {
     var u = await Http().get('/normal/getUser');
@@ -114,7 +118,7 @@ class _ChatPageState extends State<ChatPage> {
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(10))),
                                           child: Text(
-                                            e['info'],
+                                            e['content'],
                                             softWrap: true,
                                             style: TextStyle(
                                                 color: Colors.white,
@@ -134,10 +138,19 @@ class _ChatPageState extends State<ChatPage> {
                                     SizedBox(
                                       width: 12,
                                     ),
-                                    CircleAvatar(
-                                        backgroundImage: NetworkImage(
-                                            user['avatar'].toString()),
-                                        radius: 22.0),
+                                    Container(
+                                        width: 44,
+                                        height: 44,
+                                        decoration: BoxDecoration(
+                                            border: new Border.all(
+                                                color: Colors.white, width: 1),
+                                            borderRadius:
+                                                new BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  user['avatar'].toString()),
+                                              fit: BoxFit.fill,
+                                            ))),
                                   ],
                                 )
                               : Row(
@@ -156,10 +169,20 @@ class _ChatPageState extends State<ChatPage> {
                                                       )));
                                         }
                                       },
-                                      child: CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              chat['avatar'].toString()),
-                                          radius: 22.0),
+                                      child: Container(
+                                          width: 44,
+                                          height: 44,
+                                          decoration: BoxDecoration(
+                                              border: new Border.all(
+                                                  color: Colors.white,
+                                                  width: 1),
+                                              borderRadius:
+                                                  new BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                    chat['avatar'].toString()),
+                                                fit: BoxFit.fill,
+                                              ))),
                                     ),
                                     SizedBox(
                                       width: 12,
@@ -183,7 +206,7 @@ class _ChatPageState extends State<ChatPage> {
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(10))),
                                           child: Text(
-                                            e['info'],
+                                            e['content'],
                                             softWrap: true,
                                             style: TextStyle(
                                                 color: Colors.black,
@@ -209,26 +232,52 @@ class _ChatPageState extends State<ChatPage> {
                 child: Row(
                   children: [
                     IconButton(
-                        onPressed: () {
-                          setState(() {});
+                        onPressed: () async {
+                          XFile? file = await ImagePicker()
+                              .pickImage(source: ImageSource.gallery);
+                          if (file != null) {
+                            File image = File(file.path);
+                            var name = user['account'] +
+                                '-chat-' +
+                                basename(image.path);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CroppingPage(
+                                          image: image,
+                                          name: name,
+                                        ))).then((value) async {
+                              if (value != null) {
+                                var res = await Http().post(
+                                    '/normal/insertChat', {
+                                  'to_chat': widget.account,
+                                  'type': 'image',
+                                  'content': value
+                                });
+                                if (res['code'] == 200) {
+                                  load();
+                                }
+                              }
+                            });
+                          }
                         },
                         icon: Icon(Icons.satellite)),
                     Expanded(
                         child: IconTextFormField(
-                      controller: infoController,
+                      controller: contentController,
                       clear: true,
                       radius: 32.0,
                       suffixButton: ElevatedButton(
                           onPressed: () async {
-                            if (infoController.text != '') {
+                            if (contentController.text != '') {
                               var res = await Http().post(
                                   '/normal/insertChat', {
                                 'to_chat': widget.account,
                                 'type': 'text',
-                                'info': infoController.text
+                                'content': contentController.text
                               });
                               if (res['code'] == 200) {
-                                infoController.text = '';
+                                contentController.text = '';
                                 load();
                               }
                             }

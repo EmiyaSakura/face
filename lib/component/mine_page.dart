@@ -105,19 +105,26 @@ class _MinePageState extends State<MinePage>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => UserSettingPage(
-                                  user: user,
-                                  type: '头像',
-                                ))).then((value) => init());
+                                      user: user,
+                                      type: '头像',
+                                    ))).then((value) => init());
                       },
-                      child:   CircleAvatar(
-                        backgroundImage: NetworkImage(user['avatar'].toString()),
-                        radius: 26.0, // --> 半径越大，图片越大
-                      )
+                      child: Container(
+                          width: 64,
+                          height: 64,
+                          decoration: BoxDecoration(
+                              border: new Border.all(
+                                  color: Colors.white, width: 1),
+                              borderRadius: new BorderRadius.circular(10),
+                              image: DecorationImage(
+                                image: NetworkImage(user['avatar'].toString()),
+                                fit: BoxFit.fill,
+                              ))),
                     ),
                     SizedBox(
                       width: 24,
@@ -130,7 +137,7 @@ class _MinePageState extends State<MinePage>
                             style: TextStyle(fontSize: 18),
                           ),
                           Visibility(
-                            visible: user['role'].toString() == 'doctor',
+                              visible: user['role'].toString() == 'doctor',
                               child: Text(
                                   user['name'].toString() +
                                       '  ' +
@@ -144,7 +151,8 @@ class _MinePageState extends State<MinePage>
                     handleClick('设置');
                   },
                   child: const Text(
-                    '设置',style: TextStyle(fontSize: 18),
+                    '设置',
+                    style: TextStyle(fontSize: 18),
                   ),
                   style: TextButton.styleFrom(
                     minimumSize: Size.zero,
@@ -274,11 +282,17 @@ class _MinePageState extends State<MinePage>
                                 ),
                                 Row(
                                   children: [
-                                    CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage(e['avatar'].toString()),
-                                      radius: 32.0, // --> 半径越大，图片越大
-                                    ),
+                                    Container(
+                                        width: 64,
+                                        height: 64,
+                                        decoration: BoxDecoration(
+                                            border: new Border.all(
+                                                color: Colors.white, width: 1),
+                                            borderRadius: new BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                              image: NetworkImage(e['avatar'].toString()),
+                                              fit: BoxFit.fill,
+                                            ))),
                                     SizedBox(
                                       width: 12,
                                     ),

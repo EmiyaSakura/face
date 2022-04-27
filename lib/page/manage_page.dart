@@ -195,10 +195,17 @@ class _ManagePageState extends State<ManagePage> with ChangeNotifier {
                     SizedBox(
                       width: 8,
                     ),
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(user['avatar'].toString()),
-                      radius: 16.0, // --> 半径越大，图片越大
-                    ),
+                    Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                            border:
+                                new Border.all(color: Colors.white, width: 1),
+                            borderRadius: new BorderRadius.circular(10),
+                            image: DecorationImage(
+                              image: NetworkImage(user['avatar'].toString()),
+                              fit: BoxFit.fill,
+                            ))),
                     SizedBox(
                       width: 16,
                     ),

@@ -80,19 +80,6 @@ class _AppointmentPageState extends State<AppointmentPage> {
     }
   }
 
-  setMaterial(value) {
-    setState(() {
-      material = value;
-      material['code'] = materialCode;
-    });
-  }
-
-  setEvaluationCode(value) {
-    setState(() {
-      evaluationCode = value;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -150,9 +137,13 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                   doctor: widget.doctor,
                                   evaluationCode: evaluationCode,
                                   appointmentCode: widget.code,
-                                ))).then((value) => {
-                          if (value != null) {setEvaluationCode(value)}
+                                ))).then((value) {
+                      if (value != null) {
+                        setState(() {
+                          evaluationCode = value;
                         });
+                      }
+                    });
                   },
                   child: Text(
                     '评价',
@@ -248,11 +239,21 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                     },
                                     child: Row(
                                       children: [
-                                        CircleAvatar(
-                                          backgroundImage:
-                                              NetworkImage(widget.avatar),
-                                          radius: 32.0, // --> 半径越大，图片越大
-                                        ),
+                                        Container(
+                                            width: 64,
+                                            height: 64,
+                                            decoration: BoxDecoration(
+                                                border: new Border.all(
+                                                    color: Colors.white,
+                                                    width: 1),
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        10),
+                                                image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      widget.avatar),
+                                                  fit: BoxFit.fill,
+                                                ))),
                                         SizedBox(
                                           width: 12,
                                         ),
@@ -372,10 +373,14 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                                         InformationPage(
                                                             material:
                                                                 material)))
-                                            .then((value) => {
-                                                  if (value != null)
-                                                    {setMaterial(value)}
-                                                });
+                                            .then((value) {
+                                          if (value != null) {
+                                            setState(() {
+                                              material = value;
+                                              material['code'] = materialCode;
+                                            });
+                                          }
+                                        });
                                       },
                                       icon: Icon(Icons.launch),
                                     ),

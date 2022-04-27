@@ -85,10 +85,19 @@ class _AskPageState extends State<AskPage> with AutomaticKeepAliveClientMixin {
                           },
                           child: Row(
                             children: [
-                              CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(e['avatar'].toString()),
-                                  radius: 22.0),
+                              Container(
+                                width: 44,
+                                height: 44,
+                                decoration: BoxDecoration(
+                                    border: new Border.all(
+                                        color: Colors.white, width: 1),
+                                    borderRadius: new BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                      image:
+                                          NetworkImage(e['avatar'].toString()),
+                                      fit: BoxFit.fill,
+                                    ))
+                              ),
                               SizedBox(
                                 width: 12,
                               ),

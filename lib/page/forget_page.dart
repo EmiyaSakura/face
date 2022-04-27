@@ -129,7 +129,7 @@ class _ForgetPageState extends State<ForgetPage>
                   clear: true,
                   validator: (value) {
                     if (value != null &&
-                        RegExp(r'^[a-z0-9A-Z]+[-|a-z0-9A-Z._]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\.)+[a-z]{2,}$')
+                        RegExp(r'^[a-z\dA-Z]+[-|a-z\dA-Z._]+@([a-z\dA-Z]+(-[a-z\dA-Z]+)?\.)+[a-z]{2,}$')
                             .hasMatch(value)) {
                       return null;
                     } else {
@@ -195,7 +195,7 @@ class _ForgetPageState extends State<ForgetPage>
                       if (RegExp(r'[A-Z]').hasMatch(value)) {
                         count++;
                       }
-                      if (RegExp(r'[0-9]').hasMatch(value)) {
+                      if (RegExp(r'\d').hasMatch(value)) {
                         count++;
                       }
                       if (count < 2) {

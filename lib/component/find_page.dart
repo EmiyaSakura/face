@@ -130,11 +130,17 @@ class _FindPageState extends State<FindPage>
                                             SizedBox(
                                               width: 24,
                                             ),
-                                            CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  e['avatar'].toString()),
-                                              radius: 32.0, // --> 半径越大，图片越大
-                                            ),
+                                            Container(
+                                                width: 64,
+                                                height: 64,
+                                                decoration: BoxDecoration(
+                                                    border: new Border.all(
+                                                        color: Colors.white, width: 1),
+                                                    borderRadius: new BorderRadius.circular(10),
+                                                    image: DecorationImage(
+                                                      image: NetworkImage(e['avatar'].toString()),
+                                                      fit: BoxFit.fill,
+                                                    ))),
                                             SizedBox(
                                               width: 12,
                                             ),

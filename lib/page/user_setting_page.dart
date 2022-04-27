@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:face/page/cropping_page.dart';
 import 'package:face/util/router.dart';
 import 'package:face/util/toast.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../component/iconTextFormField.dart';
@@ -33,11 +36,14 @@ class _UserSettingPageState extends State<UserSettingPage> {
   TextEditingController surePwdController = TextEditingController();
   TextEditingController validController = TextEditingController();
 
+  var avatar;
+
   @override
   void initState() {
     super.initState();
     nameController.text = widget.user['nick_name'] ?? '';
     emailController.text = widget.user['email'] ?? '';
+    avatar = widget.user['avatar'] ?? '';
   }
 
   @override
@@ -172,7 +178,7 @@ class _UserSettingPageState extends State<UserSettingPage> {
                               clear: true,
                               validator: (value) {
                                 if (value != null &&
-                                    RegExp(r'^[a-z0-9A-Z]+[-|a-z0-9A-Z._]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\.)+[a-z]{2,}$')
+                                    RegExp(r'^[a-z\dA-Z]+[-|a-z\dA-Z._]+@([a-z\dA-Z]+(-[a-z\dA-Z]+)?\.)+[a-z]{2,}$')
                                         .hasMatch(value)) {
                                   return null;
                                 } else {
@@ -276,7 +282,10 @@ class _UserSettingPageState extends State<UserSettingPage> {
                                   : null;
                             },
                           ),
-                          SizedBox(height: 12),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(height: 12),
+                          ),
                           IconTextFormField(
                               controller: pwdController,
                               hintText: '请输入新密码',
@@ -296,7 +305,7 @@ class _UserSettingPageState extends State<UserSettingPage> {
                                   if (RegExp(r'[A-Z]').hasMatch(value)) {
                                     count++;
                                   }
-                                  if (RegExp(r'[0-9]').hasMatch(value)) {
+                                  if (RegExp(r'\d').hasMatch(value)) {
                                     count++;
                                   }
                                   if (count < 2) {
@@ -321,7 +330,99 @@ class _UserSettingPageState extends State<UserSettingPage> {
                                 }
                               }),
                         ],
-                      )))
+                      ))),
+              Visibility(
+                  visible: widget.type == '头像',
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Container(
+                          width: 300,
+                          height: 300,
+                          decoration: BoxDecoration(
+                              border:
+                                  new Border.all(color: Colors.white, width: 1),
+                              borderRadius: new BorderRadius.circular(0),
+                              image: DecorationImage(
+                                image: NetworkImage(avatar),
+                                fit: BoxFit.fill,
+                              ))),
+                      SizedBox(height: 24),
+                      ListTile(
+                        title: ElevatedButton(
+                          onPressed: () async {
+                            XFile? file = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+                            if (file != null) {
+                              File image = File(file.path);
+                              var name = widget.user['account'] +
+                                  '-avatar-' +
+                                  basename(image.path);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CroppingPage(
+                                            image: image,
+                                            name: name,
+                                          ))).then((value) async {
+                                if (value != null) {
+                                  var res = await Http().post(
+                                      '/normal/updateAvatar',
+                                      {'avatar': value});
+                                  setState(() {
+                                    avatar = res['info'];
+                                  });
+                                }
+                              });
+                            }
+                          },
+                          child: Text(
+                            '从相册选一张',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.green)),
+                        ),
+                      ),
+                      SizedBox(height: 12),
+                      ListTile(
+                        title: ElevatedButton(
+                            onPressed: () async {
+                              XFile? file = await ImagePicker()
+                                  .pickImage(source: ImageSource.camera);
+                              if (file != null) {
+                                File image = File(file.path);
+                                var name = widget.user['account'] +
+                                    '-avatar-' +
+                                    basename(image.path);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => CroppingPage(
+                                              image: image,
+                                              name: name,
+                                            ))).then((value) async {
+                                  if (value != null) {
+                                    var res = await Http().post(
+                                        '/normal/updateAvatar',
+                                        {'avatar': value});
+                                    setState(() {
+                                      avatar = res['info'];
+                                    });
+                                  }
+                                });
+                              }
+                            },
+                            child: Text(
+                              '拍一张照片',
+                              style: TextStyle(color: Colors.white),
+                            )),
+                      )
+                    ],
+                  )),
             ],
           ),
         ));

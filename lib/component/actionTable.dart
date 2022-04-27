@@ -87,11 +87,18 @@ class MyDataTableSource extends DataTableSource {
             {
               if (e['key'] == 'avatar')
                 {
-                  cells.add(DataCell(CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        tableData[index].data[e['key']].toString()),
-                    radius: 12.0,
-                  )))
+                  cells.add(DataCell(Container(
+                      width: 24,
+                      height: 24,
+                      decoration: BoxDecoration(
+                          border:
+                              new Border.all(color: Colors.white, width: 1),
+                          borderRadius: new BorderRadius.circular(10),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                tableData[index].data[e['key']].toString()),
+                            fit: BoxFit.fill,
+                          )))))
                 }
               else
                 {

@@ -1,0 +1,37 @@
+name: face
+description: A new Flutter project of Sakura.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 2.6.0+2
+
+environment:
+  sdk: ">=2.15.1 <3.0.0"
+
+# 项目依赖:在编码阶段和呈现页面阶段都需要的依赖
+dependencies:
+  flutter:
+    sdk: flutter
+
+  dio: ^4.0.0
+  fluttertoast: ^8.0.0
+  shared_preferences: ^2.0.0
+  webview_flutter: ^3.0.0
+  r_calendar: ^0.1.0
+  flutter_local_notifications: ^9.0.0
+  left_scroll_actions: ^2.0.0
+  bruno: ^2.1.0
+  image_picker: ^0.8.0
+
+#开发依赖:运行期间的包，比如自动生成代码的库
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  # 使用静态资源
+  uses-material-design: true
+
+  assets:
+   - logo.png
+   - title.png
+   - null.png

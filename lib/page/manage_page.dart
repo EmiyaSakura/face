@@ -1,5 +1,7 @@
+import 'package:face/component/manage_appointment.dart';
 import 'package:face/component/manage_department.dart';
 import 'package:face/component/manage_doctor.dart';
+import 'package:face/component/manage_evaluation.dart';
 import 'package:face/component/manage_hospital.dart';
 import 'package:face/component/manage_hospital_department.dart';
 import 'package:face/component/manage_user.dart';
@@ -7,6 +9,7 @@ import 'package:face/component/manage_video.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../component/statistics.dart';
 import '../util/http.dart';
 import '../util/router.dart';
 
@@ -49,13 +52,15 @@ class _ManagePageState extends State<ManagePage> with ChangeNotifier {
     ]);
     init();
     pageList = [
-      Text('欢迎'),
+      Statistics(),
       ManageUser(),
       ManageVideo(),
       ManageHospital(),
       ManageDepartment(),
       ManageHospitalDepartment(),
       ManageDoctor(),
+      ManageAppointment(),
+      ManageEvaluation(),
     ];
     pageController = PageController(initialPage: currentIndex, keepPage: true);
     isFocus = ValueNotifier(List.filled(pageList.length, false));
@@ -116,7 +121,25 @@ class _ManagePageState extends State<ManagePage> with ChangeNotifier {
           ],
         ),
         canTapOnHeader: true,
-      )
+      ),
+      ExpansionPanelRadio(
+        value: 3,
+        headerBuilder: (context, isExpanded) {
+          return Center(
+            child: Text('挂号管理'),
+          );
+        },
+        body: Column(
+          children: [
+            divider(),
+            actionButton(7, '挂号订单管理'),
+            divider(),
+            actionButton(8, '医生评价管理'),
+            divider(),
+          ],
+        ),
+        canTapOnHeader: true,
+      ),
     ];
   }
 

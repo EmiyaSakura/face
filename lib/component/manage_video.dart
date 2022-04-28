@@ -177,6 +177,9 @@ class _ManageVideoState extends State<ManageVideo> {
                             ),
                           ],
                         ),
+                        SizedBox(
+                          height: 6,
+                        ),
                       ],
                     )),
                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [

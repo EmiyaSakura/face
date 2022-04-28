@@ -59,7 +59,7 @@ class _ManageHospitalDepartmentState extends State<ManageHospitalDepartment> {
     return Dialog(
         child: SizedBox(
       width: 400,
-      height: 260,
+      height: 250,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(children: [
@@ -152,6 +152,9 @@ class _ManageHospitalDepartmentState extends State<ManageHospitalDepartment> {
                                   style: TextStyle(color: Colors.green),
                                 ))
                           ],
+                        ),
+                        SizedBox(
+                          height: 6,
                         ),
                       ],
                     )),

@@ -108,6 +108,9 @@ class _ManageDepartmentState extends State<ManageDepartment> {
                                       : null;
                                 },
                               ),
+                              SizedBox(
+                                height: 6,
+                              ),
                             ],
                           )),
                       Row(mainAxisAlignment: MainAxisAlignment.end, children: [

@@ -124,6 +124,9 @@ class _ManageHospitalState extends State<ManageHospital> {
                                 : null;
                           },
                         ),
+                        SizedBox(
+                          height: 6,
+                        ),
                       ],
                     )),
                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [

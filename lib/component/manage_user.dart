@@ -45,7 +45,7 @@ class _ManageUserState extends State<ManageUser> {
     return Dialog(
         child: SizedBox(
       width: 400,
-      height: 350,
+      height: 360,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(children: [
@@ -142,6 +142,9 @@ class _ManageUserState extends State<ManageUser> {
                                   style: TextStyle(color: Colors.green),
                                 ))
                           ],
+                        ),
+                        SizedBox(
+                          height: 6,
                         ),
                       ],
                     )),

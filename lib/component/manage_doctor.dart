@@ -251,6 +251,9 @@ class _ManageDoctorState extends State<ManageDoctor> {
                                 : null;
                           },
                         ),
+                        SizedBox(
+                          height: 6,
+                        ),
                       ],
                     )),
                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [

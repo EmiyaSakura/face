@@ -95,14 +95,14 @@ class _AccountSettingPageState extends State<AccountSettingPage> {
                   ],
                 ),
                 trailing: Icon(Icons.keyboard_arrow_right),
-                onTap: (){
+                onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => UserSettingPage(
-                            user: user,
-                            type: '邮箱',
-                          ))).then((value) => init());
+                                user: user,
+                                type: '邮箱',
+                              ))).then((value) => init());
                 },
               ),
               divider(),
@@ -116,9 +116,9 @@ class _AccountSettingPageState extends State<AccountSettingPage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => UserSettingPage(
-                              user: user,
-                              type: '密码',
-                            ))).then((value) => init());
+                                  user: user,
+                                  type: '密码',
+                                ))).then((value) => init());
                   }),
               divider(),
             ]).toList()));

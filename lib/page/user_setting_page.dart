@@ -345,10 +345,15 @@ class _UserSettingPageState extends State<UserSettingPage> {
                               border:
                                   new Border.all(color: Colors.white, width: 1),
                               borderRadius: new BorderRadius.circular(0),
-                              image: DecorationImage(
-                                image: NetworkImage(avatar),
-                                fit: BoxFit.fill,
-                              ))),
+                              image: avatar == ''
+                                  ? DecorationImage(
+                                      image: AssetImage('error.png'),
+                                      fit: BoxFit.fill,
+                                    )
+                                  : DecorationImage(
+                                      image: NetworkImage(avatar),
+                                      fit: BoxFit.fill,
+                                    ))),
                       SizedBox(height: 24),
                       ListTile(
                         title: ElevatedButton(

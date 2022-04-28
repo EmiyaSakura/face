@@ -118,8 +118,8 @@ class _MinePageState extends State<MinePage>
                           width: 64,
                           height: 64,
                           decoration: BoxDecoration(
-                              border: new Border.all(
-                                  color: Colors.white, width: 1),
+                              border:
+                                  new Border.all(color: Colors.white, width: 1),
                               borderRadius: new BorderRadius.circular(10),
                               image: DecorationImage(
                                 image: NetworkImage(user['avatar'].toString()),
@@ -288,9 +288,11 @@ class _MinePageState extends State<MinePage>
                                         decoration: BoxDecoration(
                                             border: new Border.all(
                                                 color: Colors.white, width: 1),
-                                            borderRadius: new BorderRadius.circular(10),
+                                            borderRadius:
+                                                new BorderRadius.circular(10),
                                             image: DecorationImage(
-                                              image: NetworkImage(e['avatar'].toString()),
+                                              image: NetworkImage(
+                                                  e['avatar'].toString()),
                                               fit: BoxFit.fill,
                                             ))),
                                     SizedBox(

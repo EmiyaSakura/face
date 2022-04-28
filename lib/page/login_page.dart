@@ -73,12 +73,14 @@ class _LoginPageState extends State<LoginPage>
               if (await prefs.setString('token', res['info']['token'])) {
                 //点击跳转界面
                 if (res['info']['role'] == 'root') {
-                  NavRouter.open(ManagePage.tag);
+                  if (kIsWeb) {
+                    NavRouter.open(ManagePage.tag);
+                  } else {
+                    Toaster().show('管理员请使用web登录');
+                  }
                 } else {
                   NavRouter.open(HomePage.tag);
                 }
-              } else {
-                debugPrint('error, 保存登录token失败');
               }
             } else {
               Toaster().show(res['message']);
@@ -137,7 +139,9 @@ class _LoginPageState extends State<LoginPage>
                       clear: true,
                       style: const TextStyle(fontSize: 18),
                       validator: (value) {
-                        return value == null || value.isEmpty ? '账号或邮箱不能为空' : null;
+                        return value == null || value.isEmpty
+                            ? '账号或邮箱不能为空'
+                            : null;
                       },
                     ),
                     const SizedBox(
@@ -220,8 +224,8 @@ class _LoginPageState extends State<LoginPage>
                             TextButton(
                               child: const Text(
                                 '注册新账号',
-                                style:
-                                TextStyle(color: Colors.blue, fontSize: 18.0),
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 18.0),
                               ),
                               onPressed: () {
                                 handleClick('注册');

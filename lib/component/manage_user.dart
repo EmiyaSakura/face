@@ -45,134 +45,133 @@ class _ManageUserState extends State<ManageUser> {
     return Dialog(
         child: SizedBox(
       width: 400,
-      height: 500,
+      height: 350,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              height: 12,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 18),
-                ),
-                IconButton(
-                    onPressed: () {
-                      NavRouter.pop();
-                    },
-                    icon: Icon(Icons.close))
-              ],
-            ),
-            Spacer(),
-            Form(
-                key: formKey,
-                autovalidateMode: AutovalidateMode.disabled,
-                child: Column(
-                  children: [
-                    IconTextFormField(
-                      controller: accountController,
-                      labelText: '账号',
-                      noneBorder: true,
-                      disable: true,
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    IconTextFormField(
-                      controller: nameController,
-                      hintText: '请输入名称',
-                      labelText: '名称',
-                      clear: true,
-                      noneBorder: true,
-                      validator: (value) {
-                        return value == null || value.isEmpty ? '名称不能为空' : null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    IconTextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      controller: emailController,
-                      hintText: '请输入邮箱',
-                      labelText: '邮箱',
-                      clear: true,
-                      noneBorder: true,
-                    ),
-                    SizedBox(
-                      height: 36,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Text('角色:'),
-                        ),
-                        Expanded(
-                            flex: 4,
-                            child: DropdownButton(
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text('用户'),
-                                  value: 'normal',
-                                ),
-                                DropdownMenuItem(
-                                  child: Text('医生'),
-                                  value: 'doctor',
-                                ),
-                                DropdownMenuItem(
-                                  child: Text('管理员'),
-                                  value: 'root',
-                                )
-                              ],
-                              onChanged: (value) {
-                                state(() {
-                                  role = value.toString();
-                                });
-                              },
-                              borderRadius: BorderRadius.circular(16),
-                              isExpanded: true,
-                              value: role,
-                              style: TextStyle(color: Colors.green),
-                            ))
-                      ],
-                    ),
-                  ],
-                )),
-            Spacer(),
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              TextButton(
-                  child: Text('取消', style: TextStyle(fontSize: 18)),
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 18),
+              ),
+              IconButton(
                   onPressed: () {
                     NavRouter.pop();
-                  }),
-              TextButton(
-                  child: Text('确认', style: TextStyle(fontSize: 18)),
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      var res = await Http().post('/root/updateUser', {
-                        'account': accountController.text,
-                        'name': nameController.text,
-                        'email': emailController.text,
-                        'role': role
-                      });
-                      if (res['code'] == 200) {
+                  },
+                  icon: Icon(Icons.close))
+            ],
+          ),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              controller: new ScrollController(keepScrollOffset: false),
+              children: [
+                Form(
+                    key: formKey,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    child: Column(
+                      children: [
+                        IconTextFormField(
+                          controller: accountController,
+                          labelText: '账号',
+                          noneBorder: true,
+                          disable: true,
+                        ),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        IconTextFormField(
+                          controller: nameController,
+                          hintText: '请输入名称',
+                          labelText: '名称',
+                          clear: true,
+                          noneBorder: true,
+                          validator: (value) {
+                            return value == null || value.isEmpty
+                                ? '名称不能为空'
+                                : null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        IconTextFormField(
+                          keyboardType: TextInputType.emailAddress,
+                          controller: emailController,
+                          hintText: '请输入邮箱',
+                          labelText: '邮箱',
+                          clear: true,
+                          noneBorder: true,
+                        ),
+                        SizedBox(
+                          height: 36,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text('角色:'),
+                            ),
+                            Expanded(
+                                flex: 4,
+                                child: DropdownButton(
+                                  items: [
+                                    DropdownMenuItem(
+                                      child: Text('用户'),
+                                      value: 'normal',
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text('医生'),
+                                      value: 'doctor',
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text('管理员'),
+                                      value: 'root',
+                                    )
+                                  ],
+                                  onChanged: (value) {
+                                    state(() {
+                                      role = value.toString();
+                                    });
+                                  },
+                                  borderRadius: BorderRadius.circular(16),
+                                  isExpanded: true,
+                                  value: role,
+                                  style: TextStyle(color: Colors.green),
+                                ))
+                          ],
+                        ),
+                      ],
+                    )),
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  TextButton(
+                      child: Text('取消', style: TextStyle(fontSize: 18)),
+                      onPressed: () {
                         NavRouter.pop();
-                        init();
-                      }
-                    }
-                  }),
-            ]),
-            SizedBox(
-              height: 36,
+                      }),
+                  TextButton(
+                      child: Text('确认', style: TextStyle(fontSize: 18)),
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          var res = await Http().post('/root/updateUser', {
+                            'account': accountController.text,
+                            'name': nameController.text,
+                            'email': emailController.text,
+                            'role': role
+                          });
+                          if (res['code'] == 200) {
+                            NavRouter.pop();
+                            init();
+                          }
+                        }
+                      }),
+                ]),
+              ],
             ),
-          ],
-        ),
+          )
+        ]),
       ),
     ));
   }
@@ -235,9 +234,9 @@ class _ManageUserState extends State<ManageUser> {
             });
       },
       edit: (row) {
-        accountController.text = row['account'];
-        nameController.text = row['nick_name'];
-        emailController.text = row['email'];
+        accountController.text = row['account'].toString();
+        nameController.text = row['nick_name'].toString();
+        emailController.text = row['email'].toString();
         role = row['role'];
         showDialog(
             context: context,

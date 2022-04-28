@@ -128,7 +128,8 @@ class _MineAppointmentPageState extends State<MineAppointmentPage> {
                                             evaluation: e['evaluation'],
                                             type: currentView == 0
                                                 ? 'edit'
-                                                : 'read'))).then((value) => load());
+                                                : 'read'))).then(
+                                    (value) => load());
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,12 +145,22 @@ class _MineAppointmentPageState extends State<MineAppointmentPage> {
                                           height: 64,
                                           decoration: BoxDecoration(
                                               border: new Border.all(
-                                                  color: Colors.white, width: 1),
-                                              borderRadius: new BorderRadius.circular(10),
-                                              image: DecorationImage(
-                                                image: NetworkImage(e['avatar'].toString()),
-                                                fit: BoxFit.fill,
-                                              ))),
+                                                  color: Colors.white,
+                                                  width: 1),
+                                              borderRadius:
+                                                  new BorderRadius.circular(10),
+                                              image:
+                                                  e['avatar'].toString() == ''
+                                                      ? DecorationImage(
+                                                          image: AssetImage(
+                                                              'error.png'),
+                                                          fit: BoxFit.fill,
+                                                        )
+                                                      : DecorationImage(
+                                                          image: NetworkImage(
+                                                              e['avatar']),
+                                                          fit: BoxFit.fill,
+                                                        ))),
                                       SizedBox(
                                         width: 12,
                                       ),

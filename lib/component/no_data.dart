@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NoData {
-  static List<Widget> instance(){
+  static List<Widget> instance() {
     return [
       SizedBox(
         height: 24,

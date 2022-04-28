@@ -43,102 +43,101 @@ class _ManageDepartmentState extends State<ManageDepartment> {
   Widget dialog(state, {title}) {
     return Dialog(
         child: SizedBox(
-      width: 400,
-      height: 350,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              height: 12,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 18),
-                ),
-                IconButton(
-                    onPressed: () {
-                      NavRouter.pop();
-                    },
-                    icon: Icon(Icons.close))
-              ],
-            ),
-            Spacer(),
-            Form(
-                key: formKey,
-                autovalidateMode: AutovalidateMode.disabled,
-                child: Column(
+            width: 400,
+            height: 250,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconTextFormField(
-                      controller: codeController,
-                      labelText: '编号',
-                      noneBorder: true,
-                      disable: true,
+                    Text(
+                      title,
+                      style: TextStyle(fontSize: 18),
                     ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    IconTextFormField(
-                      controller: nameController,
-                      hintText: '请输入名称',
-                      labelText: '名称',
-                      clear: true,
-                      noneBorder: true,
-                      validator: (value) {
-                        return value == null || value.isEmpty ? '名称不能为空' : null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    IconTextFormField(
-                      controller: typicalController,
-                      hintText: '请输入典型症状',
-                      labelText: '典型症状',
-                      clear: true,
-                      noneBorder: true,
-                      validator: (value) {
-                        return value == null || value.isEmpty
-                            ? '典型症状不能为空'
-                            : null;
-                      },
-                    ),
+                    IconButton(
+                        onPressed: () {
+                          NavRouter.pop();
+                        },
+                        icon: Icon(Icons.close))
                   ],
-                )),
-            Spacer(),
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              TextButton(
-                  child: Text('取消', style: TextStyle(fontSize: 18)),
-                  onPressed: () {
-                    NavRouter.pop();
-                  }),
-              TextButton(
-                  child: Text('确认', style: TextStyle(fontSize: 18)),
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      var res = await Http().post('/root/updateDepartment', {
-                        'code': codeController.text,
-                        'name': nameController.text,
-                        'typical': typicalController.text
-                      });
-                      if (res['code'] == 200) {
-                        NavRouter.pop();
-                        init();
-                      }
-                    }
-                  }),
-            ]),
-            SizedBox(
-              height: 36,
-            ),
-          ],
-        ),
-      ),
-    ));
+                ),
+                Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    controller: new ScrollController(keepScrollOffset: false),
+                    children: [
+                      Form(
+                          key: formKey,
+                          autovalidateMode: AutovalidateMode.disabled,
+                          child: Column(
+                            children: [
+                              IconTextFormField(
+                                controller: codeController,
+                                labelText: '编号',
+                                noneBorder: true,
+                                disable: true,
+                              ),
+                              SizedBox(
+                                height: 12,
+                              ),
+                              IconTextFormField(
+                                controller: nameController,
+                                hintText: '请输入名称',
+                                labelText: '名称',
+                                clear: true,
+                                noneBorder: true,
+                                validator: (value) {
+                                  return value == null || value.isEmpty
+                                      ? '名称不能为空'
+                                      : null;
+                                },
+                              ),
+                              SizedBox(
+                                height: 12,
+                              ),
+                              IconTextFormField(
+                                controller: typicalController,
+                                hintText: '请输入典型症状',
+                                labelText: '典型症状',
+                                clear: true,
+                                noneBorder: true,
+                                validator: (value) {
+                                  return value == null || value.isEmpty
+                                      ? '典型症状不能为空'
+                                      : null;
+                                },
+                              ),
+                            ],
+                          )),
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                        TextButton(
+                            child: Text('取消', style: TextStyle(fontSize: 18)),
+                            onPressed: () {
+                              NavRouter.pop();
+                            }),
+                        TextButton(
+                            child: Text('确认', style: TextStyle(fontSize: 18)),
+                            onPressed: () async {
+                              if (formKey.currentState!.validate()) {
+                                var res = await Http()
+                                    .post('/root/updateDepartment', {
+                                  'code': codeController.text,
+                                  'name': nameController.text,
+                                  'typical': typicalController.text
+                                });
+                                if (res['code'] == 200) {
+                                  NavRouter.pop();
+                                  init();
+                                }
+                              }
+                            }),
+                      ]),
+                    ],
+                  ),
+                )
+              ]),
+            )));
   }
 
   @override
@@ -170,9 +169,9 @@ class _ManageDepartmentState extends State<ManageDepartment> {
             });
       },
       edit: (row) {
-        codeController.text = row['code'];
-        nameController.text = row['name'];
-        typicalController.text = row['typical'];
+        codeController.text = row['code'].toString();
+        nameController.text = row['name'].toString();
+        typicalController.text = row['typical'].toString();
         showDialog(
             context: context,
             builder: (context) {

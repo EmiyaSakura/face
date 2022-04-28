@@ -91,8 +91,7 @@ class MyDataTableSource extends DataTableSource {
                       width: 24,
                       height: 24,
                       decoration: BoxDecoration(
-                          border:
-                              new Border.all(color: Colors.white, width: 1),
+                          border: new Border.all(color: Colors.white, width: 1),
                           borderRadius: new BorderRadius.circular(10),
                           image: DecorationImage(
                             image: NetworkImage(

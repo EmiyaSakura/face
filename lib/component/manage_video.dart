@@ -47,170 +47,167 @@ class _ManageVideoState extends State<ManageVideo> {
     return Dialog(
         child: SizedBox(
       width: 600,
-      height: 400,
+      height: 250,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              height: 12,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 18),
-                ),
-                IconButton(
-                    onPressed: () {
-                      NavRouter.pop();
-                    },
-                    icon: Icon(Icons.close))
-              ],
-            ),
-            Spacer(),
-            Form(
-                key: formKey,
-                autovalidateMode: AutovalidateMode.disabled,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: IconTextFormField(
-                            controller: codeController,
-                            labelText: '编号',
-                            noneBorder: true,
-                            disable: true,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: IconTextFormField(
-                            controller: titleController,
-                            hintText: '请输入标题',
-                            labelText: '标题',
-                            clear: true,
-                            noneBorder: true,
-                            validator: (value) {
-                              return value == null || value.isEmpty
-                                  ? '标题不能为空'
-                                  : null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: IconTextFormField(
-                            controller: authorController,
-                            hintText: '请输入作者',
-                            labelText: '作者',
-                            clear: true,
-                            noneBorder: true,
-                            validator: (value) {
-                              return value == null || value.isEmpty
-                                  ? '作者不能为空'
-                                  : null;
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: IconTextFormField(
-                            controller: identityController,
-                            hintText: '请输入头衔',
-                            labelText: '头衔',
-                            clear: true,
-                            noneBorder: true,
-                            validator: (value) {
-                              return value == null || value.isEmpty
-                                  ? '头衔不能为空'
-                                  : null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: IconTextFormField(
-                            controller: dateController,
-                            hintText: '请输入日期',
-                            labelText: '日期',
-                            clear: true,
-                            noneBorder: true,
-                            validator: (value) {
-                              return value == null || value.isEmpty
-                                  ? '日期不能为空'
-                                  : null;
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: IconTextFormField(
-                            controller: urlController,
-                            hintText: '请输入地址',
-                            labelText: '地址',
-                            clear: true,
-                            noneBorder: true,
-                            validator: (value) {
-                              return value == null || value.isEmpty
-                                  ? '地址不能为空'
-                                  : null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
-            Spacer(),
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              TextButton(
-                  child: Text('取消', style: TextStyle(fontSize: 18)),
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 18),
+              ),
+              IconButton(
                   onPressed: () {
                     NavRouter.pop();
-                  }),
-              TextButton(
-                  child: Text('确认', style: TextStyle(fontSize: 18)),
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      var res = await Http().post('/root/updateVideo', {
-                        'code': codeController.text,
-                        'title': titleController.text,
-                        'author': authorController.text,
-                        'identity': identityController.text,
-                        'date': dateController.text,
-                        'url': urlController.text,
-                      });
-                      if (res['code'] == 200) {
+                  },
+                  icon: Icon(Icons.close))
+            ],
+          ),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              controller: new ScrollController(keepScrollOffset: false),
+              children: [
+                Form(
+                    key: formKey,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: IconTextFormField(
+                                controller: codeController,
+                                labelText: '编号',
+                                noneBorder: true,
+                                disable: true,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: IconTextFormField(
+                                controller: titleController,
+                                hintText: '请输入标题',
+                                labelText: '标题',
+                                clear: true,
+                                noneBorder: true,
+                                validator: (value) {
+                                  return value == null || value.isEmpty
+                                      ? '标题不能为空'
+                                      : null;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: IconTextFormField(
+                                controller: authorController,
+                                hintText: '请输入作者',
+                                labelText: '作者',
+                                clear: true,
+                                noneBorder: true,
+                                validator: (value) {
+                                  return value == null || value.isEmpty
+                                      ? '作者不能为空'
+                                      : null;
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: IconTextFormField(
+                                controller: identityController,
+                                hintText: '请输入头衔',
+                                labelText: '头衔',
+                                clear: true,
+                                noneBorder: true,
+                                validator: (value) {
+                                  return value == null || value.isEmpty
+                                      ? '头衔不能为空'
+                                      : null;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: IconTextFormField(
+                                controller: dateController,
+                                hintText: '请输入日期',
+                                labelText: '日期',
+                                clear: true,
+                                noneBorder: true,
+                                validator: (value) {
+                                  return value == null || value.isEmpty
+                                      ? '日期不能为空'
+                                      : null;
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: IconTextFormField(
+                                controller: urlController,
+                                hintText: '请输入地址',
+                                labelText: '地址',
+                                clear: true,
+                                noneBorder: true,
+                                validator: (value) {
+                                  return value == null || value.isEmpty
+                                      ? '地址不能为空'
+                                      : null;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )),
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  TextButton(
+                      child: Text('取消', style: TextStyle(fontSize: 18)),
+                      onPressed: () {
                         NavRouter.pop();
-                        init();
-                      }
-                    }
-                  }),
-            ]),
-            SizedBox(
-              height: 36,
+                      }),
+                  TextButton(
+                      child: Text('确认', style: TextStyle(fontSize: 18)),
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          var res = await Http().post('/root/updateVideo', {
+                            'code': codeController.text,
+                            'title': titleController.text,
+                            'author': authorController.text,
+                            'identity': identityController.text,
+                            'date': dateController.text,
+                            'url': urlController.text,
+                          });
+                          if (res['code'] == 200) {
+                            NavRouter.pop();
+                            init();
+                          }
+                        }
+                      }),
+                ]),
+              ],
             ),
-          ],
-        ),
+          )
+        ]),
       ),
     ));
   }
@@ -250,12 +247,12 @@ class _ManageVideoState extends State<ManageVideo> {
             });
       },
       edit: (row) {
-        codeController.text = row['code'];
-        titleController.text = row['title'];
-        authorController.text = row['author'];
-        identityController.text = row['identity'];
-        dateController.text = row['date'];
-        urlController.text = row['url'];
+        codeController.text = row['code'].toString();
+        titleController.text = row['title'].toString();
+        authorController.text = row['author'].toString();
+        identityController.text = row['identity'].toString();
+        dateController.text = row['date'].toString();
+        urlController.text = row['url'].toString();
         showDialog(
             context: context,
             builder: (context) {

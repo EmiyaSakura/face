@@ -249,11 +249,17 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                                 borderRadius:
                                                     new BorderRadius.circular(
                                                         10),
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      widget.avatar),
-                                                  fit: BoxFit.fill,
-                                                ))),
+                                                image: widget.avatar == null
+                                                    ? DecorationImage(
+                                                        image: AssetImage(
+                                                            'error.png'),
+                                                        fit: BoxFit.fill,
+                                                      )
+                                                    : DecorationImage(
+                                                        image: NetworkImage(
+                                                            widget.avatar),
+                                                        fit: BoxFit.fill,
+                                                      ))),
                                         SizedBox(
                                           width: 12,
                                         ),

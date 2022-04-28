@@ -63,226 +63,227 @@ class _ManageDoctorState extends State<ManageDoctor> {
     return Dialog(
         child: SizedBox(
       width: 600,
-      height: 600,
+      height: 430,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              height: 12,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 18),
-                ),
-                IconButton(
-                    onPressed: () {
-                      NavRouter.pop();
-                    },
-                    icon: Icon(Icons.close))
-              ],
-            ),
-            Spacer(),
-            Form(
-                key: formKey,
-                autovalidateMode: AutovalidateMode.disabled,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: IconTextFormField(
-                            controller: accountController,
-                            hintText: '请输入账号',
-                            labelText: '账号',
-                            clear: true,
-                            noneBorder: true,
-                            validator: (value) {
-                              return value == null || value.isEmpty
-                                  ? '账号不能为空'
-                                  : null;
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: IconTextFormField(
-                            controller: nameController,
-                            hintText: '请输入名称',
-                            labelText: '名称',
-                            clear: true,
-                            noneBorder: true,
-                            validator: (value) {
-                              return value == null || value.isEmpty
-                                  ? '名称不能为空'
-                                  : null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Text('医院:'),
-                        ),
-                        Expanded(
-                            flex: 4,
-                            child: DropdownButton(
-                              items: hospitalList
-                                  .map((e) => DropdownMenuItem(
-                                        child: Text(e['name'].toString()),
-                                        value: e['code'],
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                state(() {
-                                  hospital = value.toString();
-                                });
-                              },
-                              borderRadius: BorderRadius.circular(16),
-                              isExpanded: true,
-                              value: hospital,
-                              style: TextStyle(color: Colors.green),
-                            ))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Text('科室:'),
-                        ),
-                        Expanded(
-                            flex: 4,
-                            child: DropdownButton(
-                              items: departmentList
-                                  .map((e) => DropdownMenuItem(
-                                        child: Text(e['name']),
-                                        value: e['code'],
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                state(() {
-                                  department = value.toString();
-                                });
-                              },
-                              borderRadius: BorderRadius.circular(16),
-                              isExpanded: true,
-                              value: department,
-                              style: TextStyle(color: Colors.green),
-                            ))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: IconTextFormField(
-                            controller: levelController,
-                            hintText: '请输入职称',
-                            labelText: '职称',
-                            noneBorder: true,
-                            validator: (value) {
-                              return value == null || value.isEmpty
-                                  ? '职称不能为空'
-                                  : null;
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: IconTextFormField(
-                            controller: feeController,
-                            hintText: '请输入挂号费',
-                            labelText: '挂号费',
-                            clear: true,
-                            noneBorder: true,
-                            validator: (value) {
-                              return value == null || value.isEmpty
-                                  ? '挂号费不能为空'
-                                  : null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    IconTextFormField(
-                      controller: majorController,
-                      hintText: '请输入主治',
-                      labelText: '主治',
-                      clear: true,
-                      noneBorder: true,
-                      validator: (value) {
-                        return value == null || value.isEmpty ? '主治不能为空' : null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    IconTextFormField(
-                      controller: infoController,
-                      hintText: '请输入简介',
-                      labelText: '简介',
-                      clear: true,
-                      noneBorder: true,
-                      validator: (value) {
-                        return value == null || value.isEmpty ? '简介不能为空' : null;
-                      },
-                    ),
-                  ],
-                )),
-            Spacer(),
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              TextButton(
-                  child: Text('取消', style: TextStyle(fontSize: 18)),
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 18),
+              ),
+              IconButton(
                   onPressed: () {
                     NavRouter.pop();
-                  }),
-              TextButton(
-                  child: Text('确认', style: TextStyle(fontSize: 18)),
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      var res = await Http().post('/root/updateDoctor', {
-                        'account': accountController.text,
-                        'name': nameController.text,
-                        'level': levelController.text,
-                        'fee': feeController.text,
-                        'major': majorController.text,
-                        'info': infoController.text,
-                        'h_code': hospital,
-                        'd_code': department
-                      });
-                      if (res['code'] == 200) {
+                  },
+                  icon: Icon(Icons.close))
+            ],
+          ),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              controller: new ScrollController(keepScrollOffset: false),
+              children: [
+                Form(
+                    key: formKey,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: IconTextFormField(
+                                controller: accountController,
+                                hintText: '请输入账号',
+                                labelText: '账号',
+                                clear: true,
+                                noneBorder: true,
+                                validator: (value) {
+                                  return value == null || value.isEmpty
+                                      ? '账号不能为空'
+                                      : null;
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: IconTextFormField(
+                                controller: nameController,
+                                hintText: '请输入名称',
+                                labelText: '名称',
+                                clear: true,
+                                noneBorder: true,
+                                validator: (value) {
+                                  return value == null || value.isEmpty
+                                      ? '名称不能为空'
+                                      : null;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text('医院:'),
+                            ),
+                            Expanded(
+                                flex: 4,
+                                child: DropdownButton(
+                                  items: hospitalList
+                                      .map((e) => DropdownMenuItem(
+                                            child: Text(e['name'].toString()),
+                                            value: e['code'],
+                                          ))
+                                      .toList(),
+                                  onChanged: (value) {
+                                    state(() {
+                                      hospital = value.toString();
+                                    });
+                                  },
+                                  borderRadius: BorderRadius.circular(16),
+                                  isExpanded: true,
+                                  value: hospital,
+                                  style: TextStyle(color: Colors.green),
+                                ))
+                          ],
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text('科室:'),
+                            ),
+                            Expanded(
+                                flex: 4,
+                                child: DropdownButton(
+                                  items: departmentList
+                                      .map((e) => DropdownMenuItem(
+                                            child: Text(e['name']),
+                                            value: e['code'],
+                                          ))
+                                      .toList(),
+                                  onChanged: (value) {
+                                    state(() {
+                                      department = value.toString();
+                                    });
+                                  },
+                                  borderRadius: BorderRadius.circular(16),
+                                  isExpanded: true,
+                                  value: department,
+                                  style: TextStyle(color: Colors.green),
+                                ))
+                          ],
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: IconTextFormField(
+                                controller: levelController,
+                                hintText: '请输入职称',
+                                labelText: '职称',
+                                noneBorder: true,
+                                validator: (value) {
+                                  return value == null || value.isEmpty
+                                      ? '职称不能为空'
+                                      : null;
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: IconTextFormField(
+                                controller: feeController,
+                                hintText: '请输入挂号费',
+                                labelText: '挂号费',
+                                clear: true,
+                                noneBorder: true,
+                                validator: (value) {
+                                  return value == null || value.isEmpty
+                                      ? '挂号费不能为空'
+                                      : null;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        IconTextFormField(
+                          controller: majorController,
+                          hintText: '请输入主治',
+                          labelText: '主治',
+                          clear: true,
+                          noneBorder: true,
+                          validator: (value) {
+                            return value == null || value.isEmpty
+                                ? '主治不能为空'
+                                : null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        IconTextFormField(
+                          controller: infoController,
+                          hintText: '请输入简介',
+                          labelText: '简介',
+                          clear: true,
+                          noneBorder: true,
+                          validator: (value) {
+                            return value == null || value.isEmpty
+                                ? '简介不能为空'
+                                : null;
+                          },
+                        ),
+                      ],
+                    )),
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  TextButton(
+                      child: Text('取消', style: TextStyle(fontSize: 18)),
+                      onPressed: () {
                         NavRouter.pop();
-                        init();
-                      }
-                    }
-                  }),
-            ]),
-            SizedBox(
-              height: 36,
+                      }),
+                  TextButton(
+                      child: Text('确认', style: TextStyle(fontSize: 18)),
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          var res = await Http().post('/root/updateDoctor', {
+                            'account': accountController.text,
+                            'name': nameController.text,
+                            'level': levelController.text,
+                            'fee': feeController.text,
+                            'major': majorController.text,
+                            'info': infoController.text,
+                            'h_code': hospital,
+                            'd_code': department
+                          });
+                          if (res['code'] == 200) {
+                            NavRouter.pop();
+                            init();
+                          }
+                        }
+                      }),
+                ]),
+              ],
             ),
-          ],
-        ),
+          )
+        ]),
       ),
     ));
   }
@@ -326,14 +327,14 @@ class _ManageDoctorState extends State<ManageDoctor> {
             });
       },
       edit: (row) {
-        accountController.text = row['account'];
-        nameController.text = row['name'];
-        levelController.text = row['level'];
-        feeController.text = row['fee'];
-        majorController.text = row['major'];
-        infoController.text = row['info'];
-        hospital = row['h_code'];
-        department = row['d_code'];
+        accountController.text = row['account'].toString();
+        nameController.text = row['name'].toString();
+        levelController.text = row['level'].toString();
+        feeController.text = row['fee'].toString();
+        majorController.text = row['major'].toString();
+        infoController.text = row['info'].toString();
+        hospital = row['h_code'].toString();
+        department = row['d_code'].toString();
         showDialog(
             context: context,
             builder: (context) {

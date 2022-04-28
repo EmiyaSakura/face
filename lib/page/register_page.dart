@@ -260,28 +260,26 @@ class _RegisterPageState extends State<RegisterPage>
                         }),
                     SlideTransition(
                       position: animation,
-                      child: Expanded(
-                        child: Row(children: [
-                          Checkbox(
-                            value: agree,
-                            onChanged: (value) {
-                              setState(() {
-                                agree = !agree;
-                              });
-                            },
+                      child: Row(children: [
+                        Checkbox(
+                          value: agree,
+                          onChanged: (value) {
+                            setState(() {
+                              agree = !agree;
+                            });
+                          },
+                        ),
+                        const Text('已阅读并同意'),
+                        TextButton(
+                          child: const Text(
+                            '<<用户使用守则与服务协议>>',
+                            style: TextStyle(color: Colors.blue),
                           ),
-                          const Text('已阅读并同意'),
-                          TextButton(
-                            child: const Text(
-                              '<<用户使用守则与服务协议>>',
-                              style: TextStyle(color: Colors.blue),
-                            ),
-                            onPressed: () {
-                              handleClick('用户协议');
-                            },
-                          )
-                        ]),
-                      ),
+                          onPressed: () {
+                            handleClick('用户协议');
+                          },
+                        )
+                      ]),
                     ),
                     const SizedBox(
                       height: 24,

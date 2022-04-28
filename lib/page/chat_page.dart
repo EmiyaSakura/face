@@ -112,9 +112,8 @@ class _ChatPageState extends State<ChatPage> {
                                         e['type'].toString() == 'image'
                                             ? ConstrainedBox(
                                                 constraints: BoxConstraints(
-                                                  maxWidth: 150,
-                                                  maxHeight: 400
-                                                ),
+                                                    maxWidth: 150,
+                                                    maxHeight: 400),
                                                 child: Image.network(
                                                     e['content'].toString()))
                                             : Container(
@@ -157,11 +156,18 @@ class _ChatPageState extends State<ChatPage> {
                                                 color: Colors.white, width: 1),
                                             borderRadius:
                                                 new BorderRadius.circular(10),
-                                            image: DecorationImage(
-                                              image: NetworkImage(
-                                                  user['avatar'].toString()),
-                                              fit: BoxFit.fill,
-                                            ))),
+                                            image: user['avatar'].toString() ==
+                                                    ''
+                                                ? DecorationImage(
+                                                    image:
+                                                        AssetImage('error.png'),
+                                                    fit: BoxFit.fill,
+                                                  )
+                                                : DecorationImage(
+                                                    image: NetworkImage(
+                                                        user['avatar']),
+                                                    fit: BoxFit.fill,
+                                                  ))),
                                   ],
                                 )
                               : Row(
@@ -189,11 +195,19 @@ class _ChatPageState extends State<ChatPage> {
                                                   width: 1),
                                               borderRadius:
                                                   new BorderRadius.circular(10),
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                    chat['avatar'].toString()),
-                                                fit: BoxFit.fill,
-                                              ))),
+                                              image:
+                                                  chat['avatar'].toString() ==
+                                                          ''
+                                                      ? DecorationImage(
+                                                          image: AssetImage(
+                                                              'error.png'),
+                                                          fit: BoxFit.fill,
+                                                        )
+                                                      : DecorationImage(
+                                                          image: NetworkImage(
+                                                              chat['avatar']),
+                                                          fit: BoxFit.fill,
+                                                        ))),
                                     ),
                                     SizedBox(
                                       width: 12,
@@ -209,30 +223,32 @@ class _ChatPageState extends State<ChatPage> {
                                         ),
                                         e['type'].toString() == 'image'
                                             ? ConstrainedBox(
-                                            constraints: BoxConstraints(
-                                                maxWidth: 150,
-                                                maxHeight: 400
-                                            ),
-                                            child: Image.network(
-                                                e['content'].toString()))
+                                                constraints: BoxConstraints(
+                                                    maxWidth: 150,
+                                                    maxHeight: 400),
+                                                child: Image.network(
+                                                    e['content'].toString()))
                                             : Container(
-                                          margin: EdgeInsets.only(right: 24),
-                                          padding: EdgeInsets.fromLTRB(
-                                              10, 6, 10, 10),
-                                          decoration: BoxDecoration(
-                                              color: Color.fromRGBO(
-                                                  237, 212, 212, 1.0),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10))),
-                                          child: Text(
-                                            e['content'],
-                                            softWrap: true,
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                                height: 1.5),
-                                          ),
-                                        ),
+                                                margin:
+                                                    EdgeInsets.only(right: 24),
+                                                padding: EdgeInsets.fromLTRB(
+                                                    10, 6, 10, 10),
+                                                decoration: BoxDecoration(
+                                                    color: Color.fromRGBO(
+                                                        237, 212, 212, 1.0),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10))),
+                                                child: Text(
+                                                  e['content'],
+                                                  softWrap: true,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      height: 1.5),
+                                                ),
+                                              ),
                                         SizedBox(
                                           height: 4,
                                         ),

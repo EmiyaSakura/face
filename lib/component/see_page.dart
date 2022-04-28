@@ -437,7 +437,8 @@ class _SeePageState extends State<SeePage> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(
+    return ListView(
+      controller: new ScrollController(keepScrollOffset: false),
       children: [
         Padding(
           padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
@@ -497,11 +498,8 @@ class _SeePageState extends State<SeePage> with AutomaticKeepAliveClientMixin {
                     ))
               ],
             )),
-        Expanded(
-          child: ListView(
-            controller: new ScrollController(keepScrollOffset: false),
-            children: listVideos(),
-          ),
+        Column(
+          children: listVideos(),
         ),
       ],
     );

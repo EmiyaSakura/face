@@ -5,17 +5,17 @@ import 'package:face/component/manage_hospital_department.dart';
 import 'package:face/component/manage_user.dart';
 import 'package:face/component/manage_video.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 import '../util/http.dart';
 import '../util/router.dart';
-import 'login_page.dart';
 
 //登录后的主界面
 class ManagePage extends StatefulWidget {
   static String tag = "manage_page";
+  final user;
 
-  const ManagePage({Key? key}) : super(key: key);
+  const ManagePage({Key? key, this.user}) : super(key: key);
 
   @override
   _ManagePageState createState() => _ManagePageState();
@@ -30,15 +30,23 @@ class _ManagePageState extends State<ManagePage> with ChangeNotifier {
   var user = {};
 
   init() async {
-    var res = await Http().get('/normal/getUser');
-    setState(() {
-      user = res['info'];
-    });
+    if (widget.user != null) {
+      user = widget.user;
+    } else {
+      var res = await Http().get('/normal/getUser');
+      setState(() {
+        user = res['info'];
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeRight,
+    ]);
     init();
     pageList = [
       Text('欢迎'),
@@ -115,6 +123,9 @@ class _ManagePageState extends State<ManagePage> with ChangeNotifier {
   @override
   void dispose() {
     pageController.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     super.dispose();
   }
 
@@ -165,98 +176,107 @@ class _ManagePageState extends State<ManagePage> with ChangeNotifier {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: SafeArea(
+            top: true,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Image.asset('title.png'),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Text(
-                      '工作台',
-                      style: TextStyle(fontSize: 20),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      '欢迎您！管理员: ' + user['nick_name'].toString(),
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Container(
-                        width: 32,
-                        height: 32,
-                        decoration: BoxDecoration(
-                            border:
-                                new Border.all(color: Colors.white, width: 1),
-                            borderRadius: new BorderRadius.circular(10),
-                            image: DecorationImage(
-                              image: NetworkImage(user['avatar'].toString()),
-                              fit: BoxFit.fill,
-                            ))),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    IconButton(
-                        onPressed: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          prefs.clear();
-                          NavRouter.open(LoginPage.tag);
-                        },
-                        icon: Icon(Icons.power_settings_new)),
-                    SizedBox(
-                      width: 16,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Expanded(
-                child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                    flex: 2,
-                    child: Column(
+                    Row(
                       children: [
-                        actionButton(0, '首页'),
-                        divider(),
-                        SingleChildScrollView(
-                          child: ExpansionPanelList.radio(
-                            children: expansionPanelRadioList,
-                            initialOpenPanelValue: expansionPanelRadioList[0],
-                            elevation: 0,
-                            dividerColor: Color.fromRGBO(241, 241, 241, 1),
-                          ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Image.asset('title.png'),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Text(
+                          '工作台',
+                          style: TextStyle(fontSize: 20),
                         )
                       ],
-                    )),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          '欢迎您！管理员: ' + user['nick_name'].toString(),
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Container(
+                            width: 32,
+                            height: 32,
+                            decoration: BoxDecoration(
+                                border: new Border.all(
+                                    color: Colors.white70, width: 1),
+                                borderRadius: new BorderRadius.circular(10),
+                                image: user['avatar'] == null
+                                    ? DecorationImage(
+                                        image: AssetImage('error.png'),
+                                        fit: BoxFit.fill,
+                                      )
+                                    : DecorationImage(
+                                        image: NetworkImage(user['avatar']),
+                                        fit: BoxFit.fill,
+                                      ))),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              NavRouter.pop();
+                            },
+                            icon: Icon(Icons.power_settings_new)),
+                        SizedBox(
+                          width: 16,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
                 Expanded(
-                  flex: 8,
-                  child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: PageView(
-                        //禁用横向滑动切换
-                        physics: NeverScrollableScrollPhysics(),
-                        controller: pageController,
-                        children: pageList,
-                      )),
-                )
+                    child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        flex: 2,
+                        child: ListView(
+                          shrinkWrap: true,
+                          controller:
+                              new ScrollController(keepScrollOffset: false),
+                          children: [
+                            actionButton(0, '首页'),
+                            divider(),
+                            SingleChildScrollView(
+                              child: ExpansionPanelList.radio(
+                                children: expansionPanelRadioList,
+                                initialOpenPanelValue:
+                                    expansionPanelRadioList[0],
+                                elevation: 0,
+                                dividerColor: Color.fromRGBO(241, 241, 241, 1),
+                              ),
+                            )
+                          ],
+                        )),
+                    Expanded(
+                      flex: 8,
+                      child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: PageView(
+                            //禁用横向滑动切换
+                            physics: NeverScrollableScrollPhysics(),
+                            controller: pageController,
+                            children: pageList,
+                          )),
+                    )
+                  ],
+                ))
               ],
-            ))
-          ],
-        ));
+            )));
   }
 }

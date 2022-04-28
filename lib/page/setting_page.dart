@@ -1,5 +1,6 @@
 import 'package:face/page/account_setting_page.dart';
 import 'package:face/page/login_page.dart';
+import 'package:face/page/manage_page.dart';
 import 'package:face/page/webView_page.dart';
 import 'package:face/util/http.dart';
 import 'package:face/util/router.dart';
@@ -120,8 +121,23 @@ class _SettingPageState extends State<SettingPage> {
                     Navigator.pushNamed(context, AccountSettingPage.tag)
                         .then((value) => init());
                   }),
-              user['role'].toString() == 'doctor'
-                  ? ListTile(
+              Visibility(
+                visible: user['role'].toString() == 'normal',
+                child: ListTile(
+                    title: Text('医生认证'),
+                    trailing: Icon(Icons.keyboard_arrow_right),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DoctorInformationPage(
+                                    doctor: {},
+                                  ))).then((value) => init());
+                    }),
+              ),
+              Visibility(
+                  visible: user['role'].toString() == 'doctor',
+                  child: ListTile(
                       title: Text('医生主页'),
                       trailing: Icon(Icons.keyboard_arrow_right),
                       onTap: () {
@@ -132,18 +148,20 @@ class _SettingPageState extends State<SettingPage> {
                                       account: user['account'],
                                       edit: true,
                                     )));
-                      })
-                  : ListTile(
-                      title: Text('医生认证'),
+                      })),
+              Visibility(
+                  visible: user['role'].toString() == 'root',
+                  child: ListTile(
+                      title: Text('管理后台'),
                       trailing: Icon(Icons.keyboard_arrow_right),
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => DoctorInformationPage(
-                                      doctor: {},
-                                    ))).then((value) => init());
-                      }),
+                                builder: (context) => ManagePage(
+                                      user: user,
+                                    )));
+                      })),
               divider(),
               ListTile(
                   title: Text('关于Sakura'),

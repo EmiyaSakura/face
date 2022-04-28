@@ -5,7 +5,6 @@ import 'package:face/page/home_page.dart';
 import 'package:face/page/hospital_service_page.dart';
 import 'package:face/page/login_page.dart';
 import 'package:face/page/manage_page.dart';
-import 'package:face/page/mine_appointment_page.dart';
 import 'package:face/page/notice_setting_page.dart';
 import 'package:face/page/register_page.dart';
 import 'package:face/page/setting_page.dart';

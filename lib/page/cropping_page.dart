@@ -11,7 +11,8 @@ class CroppingPage extends StatefulWidget {
   final name;
   final square;
 
-  const CroppingPage({Key? key, this.image, this.name, this.square = true}) : super(key: key);
+  const CroppingPage({Key? key, this.image, this.name, this.square = true})
+      : super(key: key);
 
   @override
   _CroppingPageState createState() => _CroppingPageState();
@@ -68,7 +69,7 @@ class _CroppingPageState extends State<CroppingPage> {
                                 options: PutOptions(key: widget.name))
                             .then((value) async {
                           Navigator.pop(context, value.key);
-                        }).catchError((err){
+                        }).catchError((err) {
                           Toaster().show('上传失败');
                         });
                       });

@@ -59,132 +59,129 @@ class _ManageHospitalDepartmentState extends State<ManageHospitalDepartment> {
     return Dialog(
         child: SizedBox(
       width: 400,
-      height: 350,
+      height: 260,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              height: 12,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 18),
-                ),
-                IconButton(
-                    onPressed: () {
-                      NavRouter.pop();
-                    },
-                    icon: Icon(Icons.close))
-              ],
-            ),
-            Spacer(),
-            Form(
-                key: formKey,
-                autovalidateMode: AutovalidateMode.disabled,
-                child: Column(
-                  children: [
-                    IconTextFormField(
-                      controller: codeController,
-                      labelText: '编号',
-                      noneBorder: true,
-                      disable: true,
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Text('医院:'),
-                        ),
-                        Expanded(
-                            flex: 4,
-                            child: DropdownButton(
-                              items: hospitalList
-                                  .map((e) => DropdownMenuItem(
-                                        child: Text(e['name'].toString()),
-                                        value: e['code'],
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                state(() {
-                                  hospital = value.toString();
-                                });
-                              },
-                              borderRadius: BorderRadius.circular(16),
-                              isExpanded: true,
-                              value: hospital,
-                              style: TextStyle(color: Colors.green),
-                            ))
-                      ],
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Text('科室:'),
-                        ),
-                        Expanded(
-                            flex: 4,
-                            child: DropdownButton(
-                              items: departmentList
-                                  .map((e) => DropdownMenuItem(
-                                        child: Text(e['name'].toString()),
-                                        value: e['code'],
-                                      ))
-                                  .toList(),
-                              onChanged: (value) {
-                                state(() {
-                                  department = value.toString();
-                                });
-                              },
-                              borderRadius: BorderRadius.circular(16),
-                              isExpanded: true,
-                              value: department,
-                              style: TextStyle(color: Colors.green),
-                            ))
-                      ],
-                    ),
-                  ],
-                )),
-            Spacer(),
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              TextButton(
-                  child: Text('取消', style: TextStyle(fontSize: 18)),
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 18),
+              ),
+              IconButton(
                   onPressed: () {
                     NavRouter.pop();
-                  }),
-              TextButton(
-                  child: Text('确认', style: TextStyle(fontSize: 18)),
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      var res = await Http().post(
-                          '/root/updateHospitalDepartment', {
-                        'code': codeController.text,
-                        'h_code': hospital,
-                        'd_code': department
-                      });
-                      if (res['code'] == 200) {
+                  },
+                  icon: Icon(Icons.close))
+            ],
+          ),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              controller: new ScrollController(keepScrollOffset: false),
+              children: [
+                Form(
+                    key: formKey,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    child: Column(
+                      children: [
+                        IconTextFormField(
+                          controller: codeController,
+                          labelText: '编号',
+                          noneBorder: true,
+                          disable: true,
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text('医院:'),
+                            ),
+                            Expanded(
+                                flex: 4,
+                                child: DropdownButton(
+                                  items: hospitalList
+                                      .map((e) => DropdownMenuItem(
+                                            child: Text(e['name'].toString()),
+                                            value: e['code'],
+                                          ))
+                                      .toList(),
+                                  onChanged: (value) {
+                                    state(() {
+                                      hospital = value.toString();
+                                    });
+                                  },
+                                  borderRadius: BorderRadius.circular(16),
+                                  isExpanded: true,
+                                  value: hospital,
+                                  style: TextStyle(color: Colors.green),
+                                ))
+                          ],
+                        ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text('科室:'),
+                            ),
+                            Expanded(
+                                flex: 4,
+                                child: DropdownButton(
+                                  items: departmentList
+                                      .map((e) => DropdownMenuItem(
+                                            child: Text(e['name'].toString()),
+                                            value: e['code'],
+                                          ))
+                                      .toList(),
+                                  onChanged: (value) {
+                                    state(() {
+                                      department = value.toString();
+                                    });
+                                  },
+                                  borderRadius: BorderRadius.circular(16),
+                                  isExpanded: true,
+                                  value: department,
+                                  style: TextStyle(color: Colors.green),
+                                ))
+                          ],
+                        ),
+                      ],
+                    )),
+                Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  TextButton(
+                      child: Text('取消', style: TextStyle(fontSize: 18)),
+                      onPressed: () {
                         NavRouter.pop();
-                        init();
-                      }
-                    }
-                  }),
-            ]),
-            SizedBox(
-              height: 36,
+                      }),
+                  TextButton(
+                      child: Text('确认', style: TextStyle(fontSize: 18)),
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          var res = await Http().post(
+                              '/root/updateHospitalDepartment', {
+                            'code': codeController.text,
+                            'h_code': hospital,
+                            'd_code': department
+                          });
+                          if (res['code'] == 200) {
+                            NavRouter.pop();
+                            init();
+                          }
+                        }
+                      }),
+                ]),
+              ],
             ),
-          ],
-        ),
+          )
+        ]),
       ),
     ));
   }
@@ -219,9 +216,9 @@ class _ManageHospitalDepartmentState extends State<ManageHospitalDepartment> {
             });
       },
       edit: (row) {
-        codeController.text = row['code'];
-        hospital = row['h_code'];
-        department = row['d_code'];
+        codeController.text = row['code'].toString();
+        hospital = row['h_code'].toString();
+        department = row['d_code'].toString();
         showDialog(
             context: context,
             builder: (context) {

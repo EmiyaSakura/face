@@ -30,7 +30,9 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     setState(() {
       evaluationList = res['info'];
     });
-    if (widget.doctor == null) {
+    if (widget.doctor != null) {
+      doctor = widget.doctor;
+    } else {
       res = await Http().post('/normal/getDoctor', {'account': widget.account});
       setState(() {
         doctor = res['info'];
@@ -41,7 +43,6 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   @override
   void initState() {
     super.initState();
-    doctor = widget.doctor ?? {};
     init();
   }
 
@@ -116,13 +117,21 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                                         decoration: BoxDecoration(
                                             border: new Border.all(
                                                 color: Colors.white, width: 1),
-                                            borderRadius: new BorderRadius.circular(10),
-                                            image: DecorationImage(
-                                              image:
-                                              NetworkImage(doctor['avatar'].toString()),
-                                              fit: BoxFit.fill,
-                                            ))
-                                    ),
+                                            borderRadius:
+                                                new BorderRadius.circular(10),
+                                            image: doctor['avatar']
+                                                        .toString() ==
+                                                    ''
+                                                ? DecorationImage(
+                                                    image:
+                                                        AssetImage('error.png'),
+                                                    fit: BoxFit.fill,
+                                                  )
+                                                : DecorationImage(
+                                                    image: NetworkImage(
+                                                        doctor['avatar']),
+                                                    fit: BoxFit.fill,
+                                                  ))),
                                     SizedBox(
                                       width: 12,
                                     ),
